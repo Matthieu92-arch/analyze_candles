@@ -32,4 +32,5 @@ def launch_surveillance():
         loop_candles(df_candles, market)
 
 
+
 launch_surveillance()
