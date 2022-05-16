@@ -10,8 +10,8 @@ api_secret = "LUqdaDI9U9kUlFXFq1G9iYFcVnCfPP1PmkQaxUH1"
 # client = FtxClient(api_key, api_secret)
 client = FtxClient(api_key, api_secret, 'trading')
 
-markets = ['BTC-PERP', 'FTM-PERP', 'ATOM-PERP', 'SOL-PERP', 'LTC-PERP']
-seconds_time = 1
+markets = ['BTC-PERP', 'FTM-PERP', 'ATOM-PERP', 'SOL-PERP', 'DOT-PERP']
+seconds_time = 5
 
 
 def get_candles(market, minutes):
@@ -29,7 +29,7 @@ def launch_surveillance():
         df_candles = pd.DataFrame.from_records(df_candles)
         df_candles = df_candles[::-1].reset_index()
         print("Data obtained.")
-        loop_candles(df_candles, market, 1)
+        loop_candles(df_candles, market, 5)
 
 
 launch_surveillance()
