@@ -1,4 +1,4 @@
-
+from telegram import telegram_bot_sendtext
 
 
 def check_sfp_bullish(df_unique, df_check_far, df_check_close, market):
@@ -10,7 +10,9 @@ def check_sfp_bullish(df_unique, df_check_far, df_check_close, market):
 
     if df_unique['low'] < df_check_far.loc[idmax]['low'] and \
             df_unique['close'] > df_check_far.loc[idmax]['close']:
-        print(f'{market}  Bullish : {df_unique["startTime"]}')
+        text = f'{market}  Bullish : {df_unique["startTime"]}'
+        print(text)
+        telegram_bot_sendtext(text)
 
     return
 
@@ -23,7 +25,9 @@ def check_sfp_bearish(df_unique, df_check_far, df_check_close, market):
 
     if df_unique['high'] > df_check_far.loc[idmax]['high'] and \
             df_unique['close'] < df_check_far.loc[idmax]['close']:
-        print(f'{market}  Bearish : {df_unique["startTime"]}')
+        text = f'{market}  Bearish : {df_unique["startTime"]}'
+        print(text)
+        telegram_bot_sendtext(text)
 
     return
 
