@@ -19,7 +19,7 @@ def get_candles(market, minutes):
 
 
 def loop_candles(df_candles, market, min):
-    for i in range(1, 1300):
+    for i in range(1, 2):
         check_sfp(market, df_candles, i, min)
 
 

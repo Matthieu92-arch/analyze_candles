@@ -33,7 +33,7 @@ def launch_surveillance():
 
 def loop_candles(df_candles, market, min):
     print("\n\nChecking Sfp in market list...\n")
-    for i in range(1, 1300):
+    for i in range(1, 2):
         check_sfp(market, df_candles, i, min)
 
 
