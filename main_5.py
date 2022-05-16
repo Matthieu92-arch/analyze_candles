@@ -1,3 +1,5 @@
+from time import sleep
+
 import pandas as pd
 
 from ftx.rest.client import FtxClient
@@ -24,6 +26,7 @@ def loop_candles(df_candles, market, min):
 
 
 def launch_surveillance():
+    sleep(10)
     for market in markets:
         df_candles = get_candles(market, seconds_time)
         df_candles = pd.DataFrame.from_records(df_candles)
