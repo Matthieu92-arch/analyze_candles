@@ -12,7 +12,7 @@ api_secret = "LUqdaDI9U9kUlFXFq1G9iYFcVnCfPP1PmkQaxUH1"
 # client = FtxClient(api_key, api_secret)
 client = FtxClient(api_key, api_secret, 'trading')
 
-markets = ['BTC-PERP', 'FTM-PERP', 'ATOM-PERP', 'SOL-PERP', 'LTC-PERP', 'DOT-PERP', 'ETH-PERP', 'MATIC-PERP']
+markets = ['BTC-PERP', 'ETH-PERP', 'FTM-PERP', 'ATOM-PERP', 'SOL-PERP', 'LTC-PERP', 'DOT-PERP', 'ETH-PERP', 'MATIC-PERP']
 # markets = ['BTC-PERP']
 seconds_time = 1
 
