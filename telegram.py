@@ -9,7 +9,7 @@ bot_chatID = "827659849"
 def telegram_bot_sendtext(text):
     message = f"-----------------------\n"
     message += text
-    message += f"-----------------------\n"
+    message += f"\n-----------------------\n"
 
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + message
 
