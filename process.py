@@ -2,63 +2,62 @@ from telegram import telegram_bot_sendtext
 import hashlib
 
 
-def alert_exist_in_saved(df_saved, df_unique, market):
-    if df_saved.empty:
-        return False
+def alert_exist_in_saved(hash_alerts, market, startTime):
+    hash_result = f'{market}{startTime}'
+    hash_object = hashlib.md5(hash_result.encode())
 
-    df_sv = df_saved.loc[df_saved['pair'] == market]
-    return True if df_unique['startTime'] in df_sv.startTime.to_list() else False
-    # df_unique['startTime'] in df_sv.startTime.to_list() ? return True else False
-    # df_sv = df_saved.loc[(df_saved['startTime'] == df_unique['startTime']) & (df_saved['volume'] == df_unique['volume'])]
-    # if not df_sv.empty:
-    #     return True
+    if not hash_alerts or len(hash_alerts) == 0:
+        return False
+    if hash_object.hexdigest() in hash_alerts:
+        return True
     return False
 
-def check_sfp_bullish(df_unique, df_check_far, df_check_close, market, minutes):
+
+def check_sfp_bullish(df_unique, df_check_far, df_check_close, market, minutes, hash_alerts):
     idmax = df_check_far['low'].idxmin()
 
 
-    if df_check_close['low'].min() < df_unique['low']:
-        return
+    if df_check_close['low'].min() < df_unique['low'] or alert_exist_in_saved(hash_alerts, market, df_unique["startTime"]):
+        return hash_alerts
 
     if df_unique['low'] < df_check_far.loc[idmax]['low'] and \
             df_unique['close'] > df_check_far.loc[idmax]['close']:
+        hash_result = f'{market}{df_unique["startTime"]}'
+        hash_object = hashlib.md5(hash_result.encode())
+        hash_alerts.append(hash_object.hexdigest())
         text = f'{market}  Bullish : {df_unique["startTime"]}'
-        print(text)
-        hash_object = hashlib.md5(text.encode())
-        print(hash_object.hexdigest())
 
-        df_unique['pair'] = [market]
+        print(f'{text}  -> {hash_object.hexdigest()}')
         telegram_bot_sendtext(text, minutes)
 
-    return
+    return hash_alerts
 
 
-def check_sfp_bearish(df_unique, df_check_far, df_check_close, market, minutes):
+def check_sfp_bearish(df_unique, df_check_far, df_check_close, market, minutes, hash_alerts):
     idmax = df_check_far['high'].idxmax()
 
-    if df_check_close['high'].max() > df_unique['high']:
-        return
+    if df_check_close['high'].max() > df_unique['high'] or alert_exist_in_saved(hash_alerts, market, df_unique["startTime"]):
+        return hash_alerts
 
     if df_unique['high'] > df_check_far.loc[idmax]['high'] and \
             df_unique['close'] < df_check_far.loc[idmax]['close']:
+        hash_result = f'{market}{df_unique["startTime"]}'
+        hash_object = hashlib.md5(hash_result.encode())
+        hash_alerts.append(hash_object.hexdigest())
         text = f'{market}  Bearish : {df_unique["startTime"]}'
-        print(text)
-        hash_object = hashlib.md5(text.encode())
-        print(hash_object.hexdigest())
 
-        df_unique['pair'] = market
+        print(f'{text}  -> {hash_object.hexdigest()}')
         telegram_bot_sendtext(text, minutes)
 
-    return
+    return hash_alerts
 
 
-def check_sfp(market, df_candles, i, minutes, far_candle):
+def check_sfp(market, df_candles, i, minutes, far_candle, hash_alerts):
     df_unique = df_candles.loc[i]
     df_check_far = df_candles.loc[i+25:i+far_candle]
     df_check_close = df_candles.loc[i+1:i+25]
 
-    check_sfp_bullish(df_unique, df_check_far, df_check_close, market, minutes)
-    check_sfp_bearish(df_unique, df_check_far, df_check_close, market, minutes)
+    hash_alerts = check_sfp_bullish(df_unique, df_check_far, df_check_close, market, minutes, hash_alerts)
+    hash_alerts = check_sfp_bearish(df_unique, df_check_far, df_check_close, market, minutes, hash_alerts)
 
-    return
+    return hash_alerts
