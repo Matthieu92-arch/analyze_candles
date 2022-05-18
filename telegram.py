@@ -16,4 +16,3 @@ def telegram_bot_sendtext(text, minutes):
     response = requests.get(send_text)
 
     return response.json()
-
