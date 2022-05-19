@@ -16,9 +16,9 @@ def alert_exist_in_saved(hash_alerts, market, startTime):
 def check_sfp_bullish(df_unique, df_check_far, df_check_close, market, minutes, hash_alerts):
     idmax = df_check_far['low'].idxmin()
 
-
     if df_check_close['low'].min() < df_unique['low'] or alert_exist_in_saved(hash_alerts, market, df_unique["startTime"]):
         return hash_alerts
+
 
     if df_unique['low'] < df_check_far.loc[idmax]['low'] and \
             df_unique['close'] > df_check_far.loc[idmax]['close']:

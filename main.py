@@ -15,9 +15,9 @@ api_secret = "LUqdaDI9U9kUlFXFq1G9iYFcVnCfPP1PmkQaxUH1"
 # client = FtxClient(api_key, api_secret)
 client = FtxClient(api_key, api_secret, 'trading')
 
-markets = ['BTC-PERP', 'ETH-PERP', 'FTM-PERP', 'ATOM-PERP', 'SOL-PERP',
+markets = ['BTC-PERP', 'ETH-PERP', 'FTM-PERP', 'ATOM-PERP', 'BNB-PERP',
            'LTC-PERP', 'DOT-PERP', 'ETH-PERP', 'MATIC-PERP']
-# markets = ['ETH-PERP']
+# markets = ['BNB-PERP']
 seconds_time = 1
 
 
@@ -26,7 +26,7 @@ def get_candles(market, minutes):
 
 
 def launch_surveillance():
-    sleep(10)
+    sleep(5)
     far_candle = 151
     file_name = 'output_1.txt'
     hash_alerts = read_list_from_file(file_name)
@@ -45,7 +45,7 @@ def launch_surveillance():
 
 def loop_candles(df_candles, market, min, far_candle, hash_alerts):
     print(market)
-    for i in range(1, 6):
+    for i in range(1, 7):
         hash_alerts = check_sfp(market, df_candles, i, min, far_candle, hash_alerts)
     return hash_alerts
 
